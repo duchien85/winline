@@ -1,4 +1,4 @@
-group 'org.freelectron'
+group 'com.github.leobel'
 version '1.0'
 
 apply plugin: 'java'

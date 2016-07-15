@@ -212,11 +212,71 @@ public class LogicWinLineTest {
 
     @Test
     public void addScore() throws Exception {
+        Checker[][] board = new Checker[9][9];
+        board[0][0] = new Checker(new MPoint(0,0), LogicWinLine.Color.BLUE);
+        board[1][1] = new Checker(new MPoint(1,1), LogicWinLine.Color.GREEN);
+        board[2][2] = new Checker(new MPoint(2,2), LogicWinLine.Color.YELLOW);
+        board[3][3] = new Checker(new MPoint(3,3), LogicWinLine.Color.GREEN);
+        board[4][4] = new Checker(new MPoint(4,4), LogicWinLine.Color.WHITE);
+        board[5][5] = new Checker(new MPoint(5,5), LogicWinLine.Color.GREEN);
+        board[6][6] = new Checker(new MPoint(6,6), LogicWinLine.Color.GREEN);
+        board[7][7] = new Checker(new MPoint(7,7), LogicWinLine.Color.GREEN);
+        board[8][8] = new Checker(new MPoint(8,8), LogicWinLine.Color.GREEN);
+        Checker[]next = new Checker[]{new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE)};
+        LogicWinLine game = new LogicWinLine(board, next, 0);
 
+        game.addScore(123);
+
+        assertThat(game.getScore(), is(123));
+
+        game.addScore(15);
+
+        assertThat(game.getScore(), is(138));
     }
 
     @Test
-    public void score() throws Exception {
+    public void getScore() throws Exception {
+        Checker[][] board = new Checker[9][9];
+        board[0][0] = new Checker(new MPoint(0,0), LogicWinLine.Color.BLUE);
+        board[1][1] = new Checker(new MPoint(1,1), LogicWinLine.Color.GREEN);
+        board[2][2] = new Checker(new MPoint(2,2), LogicWinLine.Color.YELLOW);
+        board[3][3] = new Checker(new MPoint(3,3), LogicWinLine.Color.GREEN);
+        board[5][4] = new Checker(new MPoint(5,4), LogicWinLine.Color.GREEN);
+        board[5][5] = new Checker(new MPoint(5,5), LogicWinLine.Color.GREEN);
+        board[6][6] = new Checker(new MPoint(6,6), LogicWinLine.Color.GREEN);
+        board[7][7] = new Checker(new MPoint(7,7), LogicWinLine.Color.GREEN);
+        board[8][8] = new Checker(new MPoint(8,8), LogicWinLine.Color.GREEN);
+        board[4][2] = new Checker(new MPoint(4,2), LogicWinLine.Color.GREEN);
+        board[6][2] = new Checker(new MPoint(6,2), LogicWinLine.Color.GREEN);
+        board[4][3] = new Checker(new MPoint(4,3), LogicWinLine.Color.GREEN);
+        board[5][3] = new Checker(new MPoint(5,3), LogicWinLine.Color.GREEN);
+        board[3][4] = new Checker(new MPoint(3,4), LogicWinLine.Color.GREEN);
+        board[6][4] = new Checker(new MPoint(6,4), LogicWinLine.Color.GREEN);
+        board[3][5] = new Checker(new MPoint(3,5), LogicWinLine.Color.GREEN);
+        board[4][5] = new Checker(new MPoint(4,5), LogicWinLine.Color.GREEN);
+        board[4][6] = new Checker(new MPoint(4,6), LogicWinLine.Color.GREEN);
+        board[4][7] = new Checker(new MPoint(4,7), LogicWinLine.Color.GREEN);
+        Checker[]next = new Checker[]{new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE)};
+        LogicWinLine game = new LogicWinLine(board, next, 0);
 
+        Checker f = game.getBoard()[5][4];
+        game.moveChecker(f.getPosition(), new MPoint(4,4), f);
+
+        MPoint[] pairs = new MPoint[8];
+        int[] score = new int[4];
+
+        boolean result = game.canDelete(game.getBoard()[4][4].getPosition(), pairs, score);
+        int finalScore = 0;
+        for (int i = 0; i < score.length; i++){
+            if(score[i] >= 5){
+                finalScore += finalScore ==0 ? score[i] : score[i] - 1;
+            }
+
+        }
+        game.addScore(finalScore);
+
+        assertThat(result, is(true));
+        assertThat(finalScore, is(11));
+        assertThat(game.getScore(), is(finalScore));
     }
 }

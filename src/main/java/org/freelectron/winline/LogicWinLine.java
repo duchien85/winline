@@ -165,7 +165,7 @@ public class LogicWinLine {
         this.score += score;
     }
 
-    public Integer Score() {
+    public Integer getScore() {
         return this.score;
     }
 

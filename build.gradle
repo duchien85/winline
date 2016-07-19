@@ -1,9 +1,12 @@
 group 'com.github.leobel'
-version '1.0'
 
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.8
+
+version '1.0'
 
 repositories {
     mavenCentral()
@@ -12,4 +15,64 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
-version '1.0'
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+// Signature of artifacts
+signing {
+    sign configurations.archives
+}
+
+// OSSRH publication
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            // POM signature
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            // Target repository
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUser, password: ossrhPassword)
+            }
+            pom.project {
+                name project.name
+                description project.description
+                packaging 'jar'
+                url 'https://github.com/leobel/winline'
+
+                scm {
+                    connection 'scm:git@github.com:leobel/winline.git'
+                    developerConnection 'scm:git@github.com:leobel/winline.git'
+                    url 'scm:git@github.com:leobel/winline.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The MIT License (MIT)'
+                        url 'http://opensource.org/licenses/MIT'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'leobel'
+                        name = 'Leobel Izquierdo'
+                        email = 'leobelizquierdo@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}

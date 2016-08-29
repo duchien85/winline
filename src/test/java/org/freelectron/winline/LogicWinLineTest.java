@@ -65,17 +65,17 @@ public class LogicWinLineTest {
         Checker[]next = new Checker[]{new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE)};
         LogicWinLine game = new LogicWinLine(board, next, 0);
 
-        assertArrayEquals(next, game.getdNext());
+        assertArrayEquals(next, game.getNext());
     }
 
     @Test
     public void buildNext() throws Exception {
         LogicWinLine game = new LogicWinLine(9);
 
-        assertThat(game.getdNext().length, is(3));
-        assertThat(game.getdNext()[0], notNullValue());
-        assertThat(game.getdNext()[1], notNullValue());
-        assertThat(game.getdNext()[2], notNullValue());
+        assertThat(game.getNext().length, is(3));
+        assertThat(game.getNext()[0], notNullValue());
+        assertThat(game.getNext()[1], notNullValue());
+        assertThat(game.getNext()[2], notNullValue());
     }
 
     @Test

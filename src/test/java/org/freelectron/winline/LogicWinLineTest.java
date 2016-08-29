@@ -99,14 +99,70 @@ public class LogicWinLineTest {
         assertThat(path, notNullValue());
         assertThat(path.isEmpty(), is(false));
         assertThat(path, is("DDDDDD"));
+    }
 
-        String path1 = game.getPath(board[2][2].getPosition(), new MPoint(0,7));
-        assertThat(path1, notNullValue());
-        assertThat(path1.isEmpty(), is(false));
-        assertThat(path1.length(), is(7));
+    @Test
+    public void getPathUpStairs() throws Exception {
+        Checker[][] board = new Checker[9][9];
+        board[0][0] = new Checker(new MPoint(0,0), LogicWinLine.Color.BLUE);
+        board[0][2] = new Checker(new MPoint(0,2), LogicWinLine.Color.WHITE);
+        board[1][1] = new Checker(new MPoint(1,1), LogicWinLine.Color.BLACK);
+        board[2][2] = new Checker(new MPoint(2,2), LogicWinLine.Color.YELLOW);
+        board[3][3] = new Checker(new MPoint(3,3), LogicWinLine.Color.RED);
+        board[4][4] = new Checker(new MPoint(4,4), LogicWinLine.Color.WHITE);
+        board[5][5] = new Checker(new MPoint(5,5), LogicWinLine.Color.GREEN);
+        board[6][6] = new Checker(new MPoint(6,6), LogicWinLine.Color.GREEN);
+        board[7][7] = new Checker(new MPoint(7,7), LogicWinLine.Color.GREEN);
+        board[8][8] = new Checker(new MPoint(8,8), LogicWinLine.Color.GREEN);
+        Checker[]next = new Checker[]{new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE)};
+        LogicWinLine game = new LogicWinLine(board, next, 0);
+
+        String path = game.getPath(board[6][6].getPosition(), new MPoint(1,3));
+        assertThat(path, notNullValue());
+        assertThat(path.isEmpty(), is(false));
+        assertThat(path, is("AAIAIAIA"));
+    }
+
+    @Test
+    public void getPathSquare() throws Exception {
+        Checker[][] board = new Checker[9][9];
+        board[0][0] = new Checker(new MPoint(0,0), LogicWinLine.Color.BLUE);
+        board[0][2] = new Checker(new MPoint(0,2), LogicWinLine.Color.WHITE);
+        board[1][1] = new Checker(new MPoint(1,1), LogicWinLine.Color.BLACK);
+        board[2][2] = new Checker(new MPoint(2,2), LogicWinLine.Color.YELLOW);
+        board[3][3] = new Checker(new MPoint(3,3), LogicWinLine.Color.RED);
+        board[4][4] = new Checker(new MPoint(4,4), LogicWinLine.Color.WHITE);
+        board[5][5] = new Checker(new MPoint(5,5), LogicWinLine.Color.GREEN);
+        board[6][6] = new Checker(new MPoint(6,6), LogicWinLine.Color.GREEN);
+        board[7][7] = new Checker(new MPoint(7,7), LogicWinLine.Color.GREEN);
+        board[8][8] = new Checker(new MPoint(8,8), LogicWinLine.Color.GREEN);
+        Checker[]next = new Checker[]{new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE)};
+        LogicWinLine game = new LogicWinLine(board, next, 0);
+
+        String path = game.getPath(board[1][1].getPosition(), new MPoint(5,6));
+        assertThat(path, notNullValue());
+        assertThat(path.isEmpty(), is(false));
+        assertThat(path, is("DDDDDBBBB"));
+    }
+
+
+    @Test
+    public void getPathNotFound() throws Exception {
+        Checker[][] board = new Checker[9][9];
+        board[0][0] = new Checker(new MPoint(0,0), LogicWinLine.Color.BLUE);
+        board[0][2] = new Checker(new MPoint(0,2), LogicWinLine.Color.WHITE);
+        board[1][1] = new Checker(new MPoint(1,1), LogicWinLine.Color.BLACK);
+        board[2][2] = new Checker(new MPoint(2,2), LogicWinLine.Color.YELLOW);
+        board[3][3] = new Checker(new MPoint(3,3), LogicWinLine.Color.RED);
+        board[4][4] = new Checker(new MPoint(4,4), LogicWinLine.Color.WHITE);
+        board[5][5] = new Checker(new MPoint(5,5), LogicWinLine.Color.GREEN);
+        board[6][6] = new Checker(new MPoint(6,6), LogicWinLine.Color.GREEN);
+        board[7][7] = new Checker(new MPoint(7,7), LogicWinLine.Color.GREEN);
+        board[8][8] = new Checker(new MPoint(8,8), LogicWinLine.Color.GREEN);
+        Checker[]next = new Checker[]{new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE)};
+        LogicWinLine game = new LogicWinLine(board, next, 0);
 
         String noPath = game.getPath(board[0][0].getPosition(), new MPoint(5,6));
-
         assertThat(noPath, nullValue());
     }
 

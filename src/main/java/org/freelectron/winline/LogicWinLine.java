@@ -229,8 +229,7 @@ public class LogicWinLine {
                 int yNeighbor = y + vy[i];
                 int neighbor = (this.dimention * xNeighbor) + yNeighbor;
                 if (xNeighbor >= 0 && xNeighbor < dimention && yNeighbor >= 0 && yNeighbor < dimention && !visited[neighbor] && board[xNeighbor][yNeighbor] == null) {
-                    count++;
-                    queue[count] = neighbor;
+                    queue[count++] = neighbor;
                     visited[neighbor] = true;
                     parent[neighbor] = current;
                     if (neighbor == to) {

@@ -2,6 +2,12 @@ package org.freelectron.winline;
 
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -334,5 +340,72 @@ public class LogicWinLineTest {
         assertThat(result, is(true));
         assertThat(finalScore, is(11));
         assertThat(game.getScore(), is(finalScore));
+    }
+
+    @Test
+    public void serializeGame(){
+        Checker[][] board = new Checker[9][9];
+        board[0][0] = new Checker(new MPoint(0,0), LogicWinLine.Color.BLUE);
+        board[1][1] = new Checker(new MPoint(1,1), LogicWinLine.Color.GREEN);
+        board[2][2] = new Checker(new MPoint(2,2), LogicWinLine.Color.YELLOW);
+        board[3][3] = new Checker(new MPoint(3,3), LogicWinLine.Color.GREEN);
+        board[5][4] = new Checker(new MPoint(5,4), LogicWinLine.Color.GREEN);
+        board[5][5] = new Checker(new MPoint(5,5), LogicWinLine.Color.GREEN);
+        board[6][6] = new Checker(new MPoint(6,6), LogicWinLine.Color.GREEN);
+        board[7][7] = new Checker(new MPoint(7,7), LogicWinLine.Color.GREEN);
+        board[8][8] = new Checker(new MPoint(8,8), LogicWinLine.Color.GREEN);
+        board[4][2] = new Checker(new MPoint(4,2), LogicWinLine.Color.GREEN);
+        board[6][2] = new Checker(new MPoint(6,2), LogicWinLine.Color.GREEN);
+        board[4][3] = new Checker(new MPoint(4,3), LogicWinLine.Color.GREEN);
+        board[5][3] = new Checker(new MPoint(5,3), LogicWinLine.Color.GREEN);
+        board[3][4] = new Checker(new MPoint(3,4), LogicWinLine.Color.GREEN);
+        board[6][4] = new Checker(new MPoint(6,4), LogicWinLine.Color.GREEN);
+        board[3][5] = new Checker(new MPoint(3,5), LogicWinLine.Color.GREEN);
+        board[4][5] = new Checker(new MPoint(4,5), LogicWinLine.Color.GREEN);
+        board[4][6] = new Checker(new MPoint(4,6), LogicWinLine.Color.GREEN);
+        board[4][7] = new Checker(new MPoint(4,7), LogicWinLine.Color.GREEN);
+        Checker[]next = new Checker[]{new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE)};
+        LogicWinLine game = new LogicWinLine(board, next, 15);
+
+        Exception ex = null;
+        byte[] baos = null;
+        try {
+            baos = pickle(game);
+        } catch (IOException e) {
+            ex = e;
+        }
+
+        assertThat(baos, notNullValue());
+        LogicWinLine serializeGame = null;
+        try {
+            serializeGame = unpickle(baos, LogicWinLine.class);
+        } catch (Exception e) {
+            ex = e;
+        }
+        assertThat(serializeGame, notNullValue());
+        assertThat(serializeGame.getCheckerCount(), is(game.getCheckerCount()));
+        assertThat(serializeGame.getScore(), is(game.getScore()));
+        assertThat(serializeGame.getNext()[1], is(new Checker(LogicWinLine.Color.BLUE)));
+        assertThat(serializeGame.getBoard()[4][5], is(new Checker(new MPoint(4,5), LogicWinLine.Color.GREEN)));
+        assertThat(ex, nullValue());
+    }
+
+    private static <T extends Serializable> byte[] pickle(T obj)
+            throws IOException
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(obj);
+        oos.close();
+        return baos.toByteArray();
+    }
+
+    private static <T extends Serializable> T unpickle(byte[] b, Class<T> cl)
+            throws IOException, ClassNotFoundException
+    {
+        ByteArrayInputStream bais = new ByteArrayInputStream(b);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        Object o = ois.readObject();
+        return cl.cast(o);
     }
 }

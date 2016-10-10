@@ -1,5 +1,6 @@
 package org.freelectron.winline;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Random;
 /**
  * Created by leobel on 7/12/16.
  */
-public class LogicWinLine {
+public class LogicWinLine implements Serializable {
 
     public int checkerCount;
     private Color[] colors;

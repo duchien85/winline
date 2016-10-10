@@ -1,9 +1,11 @@
 package org.freelectron.winline;
 
+import java.io.Serializable;
+
 /**
  * Created by leobel on 7/12/16.
  */
-public class MPoint {
+public class MPoint implements Serializable{
     public int x;
     public int y;
 

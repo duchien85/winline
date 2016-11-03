@@ -343,6 +343,32 @@ public class LogicWinLineTest {
     }
 
     @Test
+    public void getCloneBoard(){
+        Checker[][] board = new Checker[9][9];
+        board[0][0] = new Checker(new MPoint(0,0), LogicWinLine.Color.BLUE);
+        board[1][1] = new Checker(new MPoint(1,1), LogicWinLine.Color.BLACK);
+        board[2][2] = new Checker(new MPoint(2,2), LogicWinLine.Color.YELLOW);
+        board[3][3] = new Checker(new MPoint(3,3), LogicWinLine.Color.RED);
+        board[4][4] = new Checker(new MPoint(4,4), LogicWinLine.Color.WHITE);
+        board[5][5] = new Checker(new MPoint(5,5), LogicWinLine.Color.GREEN);
+        Checker[]next = new Checker[]{new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE), new Checker(LogicWinLine.Color.BLUE)};
+        LogicWinLine game = new LogicWinLine(board, next, 0);
+
+        Checker[][] clone = game.getBoard(true);
+
+        Checker f = board[0][0];
+        MPoint dest = new MPoint(3, 4);
+        game.moveChecker(f.getPosition(), dest, f);
+
+
+        assertThat(game.getCheckerCount(), is(6));
+        assertThat(game.getBoard()[0][0], nullValue());
+        assertThat(game.getBoard()[3][4], is(f));
+        assertThat(clone[0][0], notNullValue());
+
+    }
+
+    @Test
     public void serializeGame(){
         Checker[][] board = new Checker[9][9];
         board[0][0] = new Checker(new MPoint(0,0), LogicWinLine.Color.BLUE);

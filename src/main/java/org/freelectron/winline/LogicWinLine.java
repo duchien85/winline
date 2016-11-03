@@ -71,6 +71,21 @@ public class LogicWinLine implements Serializable {
         }
     }
 
+    public Checker[][] getBoard(boolean clone) {
+        if(!clone) return getBoard();
+        else{
+            Checker[][] result = new Checker[board.length][board.length];
+            int dimension1 = board.length;
+            int dimension2 = board[0].length;
+            for (int i = 0; i < dimension1; i++){
+                for (int j = 0; j < dimension2; j++){
+                    result[i][j] = board[i][j];
+                }
+            }
+            return result;
+        }
+    }
+
     public Checker[][] getBoard() {
         return this.board;
     }
